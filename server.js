@@ -15,7 +15,7 @@ server.use(cors()); //make my server open for any request
 const PORT = process.env.PORT || 3010;
 
 // mongoose config
-mongoose.connect('mongodb://localhost:27017/301d35-cats', {useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB (301d35-cats)
+mongoose.connect('mongodb://localhost:27017/301d35-books', {useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB (301d35-books)
 
 const bookSchema = new mongoose.Schema({ //define the schema (structure)
     title: String,
@@ -23,7 +23,7 @@ const bookSchema = new mongoose.Schema({ //define the schema (structure)
     status: String
   });
 
-const BookModel = mongoose.model('Book', bookSchema); //compile the schem into a model
+const BookModel = mongoose.model('Book', bookSchema); //compile the schema into a model
 
 //seed data (insert initial data)
 async function seedData(){
@@ -53,7 +53,7 @@ async function seedData(){
 //Routes
 server.get('/',homeHandler);
 server.get('/test',testHandler);
-server.get('/getCats',getBooksHandler);
+server.get('/getBooks',getBooksHandler);
 server.get('*',defualtHandler);
 
 
@@ -75,12 +75,10 @@ function defualtHandler(req,res) {
 
 function getBooksHandler(req,res) {
     BookModel.find({},(err,result)=>{
-        if(err)
-        {
+        if(err){
             console.log(err);
         }
-        else
-        {
+        else{
             console.log(result);
             res.send(result);
         }
