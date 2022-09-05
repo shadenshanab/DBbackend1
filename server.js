@@ -17,42 +17,43 @@ const PORT = process.env.PORT || 3010;
 // mongoose config
 mongoose.connect('mongodb://localhost:27017/301d35-cats', {useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB (301d35-cats)
 
-const kittySchema = new mongoose.Schema({ //define the schema (structure)
-    name: String,
-    breed: String,
+const bookSchema = new mongoose.Schema({ //define the schema (structure)
+    title: String,
+    description: String,
+    status: String
   });
 
-const KittenModel = mongoose.model('Kitten', kittySchema); //compile the schem into a model
+const BookModel = mongoose.model('Book', bookSchema); //compile the schem into a model
 
 //seed data (insert initial data)
 async function seedData(){
-    const firstCat = new KittenModel({
-        name:"Fluffy",
-        breed:"angora"
+    const firstBook = new BookModel({
+        title:"Da Vinci Code",
+        description:"Symbologist Robert Langdon travels from Paris to London to unravel a bizarre murder. Accompanied by a cryptographer, he soon comes across a religious enigma protected by an age-old secret society.",
+        state: "available"
     })
 
-    const secondCat = new KittenModel({
-        name:"Frankie",
-        breed:"American"
+    const secondBook = new BookModel({
+        title:"Harry Potter and the Deathly Hallows",
+        description:"After Voldemort takes over the Ministry of Magic, Harry, Ron and Hermione are forced into hiding. They try to decipher the clues left to them by Dumbledore to find and destroy Voldemort's Horcruxes.",
+        state: "available"
     })
 
-    const thirdCat = new KittenModel({
-        name:"Balkky",
-        breed:"British"
+    const thirdBook = new BookModel({
+        title:"Life of Pi",
+        description:"Molitor Pi Patel, a Tamil boy from Pondicherry, explores issues of spirituality and practicality from an early age. He survives 227 days after a shipwreck while stranded on a boat in the Pacific Ocean with a Bengal tiger named Richard Parker.",
+        state: "sold-out"
     })
 
-    await firstCat.save();
-    await secondCat.save();
-    await thirdCat.save();
+    await firstBook.save();
+    await secondBook.save();
+    await thirdBook.save();
 }
-
-// seedData(); //call seedData function
-
 
 //Routes
 server.get('/',homeHandler);
 server.get('/test',testHandler);
-server.get('/getCats',getCatsHandler);
+server.get('/getCats',getBooksHandler);
 server.get('*',defualtHandler);
 
 
@@ -72,8 +73,8 @@ function defualtHandler(req,res) {
 }
 
 
-function getCatsHandler(req,res) {
-    KittenModel.find({},(err,result)=>{
+function getBooksHandler(req,res) {
+    BookModel.find({},(err,result)=>{
         if(err)
         {
             console.log(err);
